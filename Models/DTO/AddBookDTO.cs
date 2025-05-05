@@ -1,8 +1,7 @@
-﻿namespace LibraryManagementSystem.Models
+﻿namespace LibraryManagementSystem.Models.DTO
 {
-    public class Book
+    public class AddBookDTO
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public int Quantity { get; set; }

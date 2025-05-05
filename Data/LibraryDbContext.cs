@@ -1,4 +1,4 @@
-﻿using LibraryManagementSystem.Models;
+﻿using LibraryManagementSystem.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Data
