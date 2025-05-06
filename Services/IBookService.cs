@@ -13,5 +13,6 @@ namespace LibraryManagementSystem.Services
         Task Delete(Guid id);
         Task<bool> Update(Book updatedBook);
         Task<List<Book>> Search(string? title, string? author, bool? inStock);
+        Task<List<Book>> GetSimilarBooks(Guid bookId);
     }
 }

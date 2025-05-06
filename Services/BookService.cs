@@ -62,5 +62,45 @@ namespace LibraryManagementSystem.Services
             return _bookRepository.SearchAsync(title, author, inStock);
         }
 
+        public async Task<List<Book>> GetSimilarBooks(Guid bookId)
+        {
+            var targetBook = await _bookRepository.GetByIdAsync(bookId);
+            if (targetBook == null) return new List<Book>();
+
+            var allBooks = await _bookRepository.GetAllAsync();
+
+            var similarBooks = allBooks
+                .Where(b => b.Id != targetBook.Id)
+                .Select(b => new
+                {
+                    Book = b,
+                    Score = GetSimilarityScore(targetBook, b)
+                })
+                .Where(x => x.Score > 0)
+                .OrderByDescending(x => x.Score)
+                .Take(5)
+                .Select(x => x.Book)
+                .ToList();
+
+            return similarBooks;
+        }
+
+        private int GetSimilarityScore(Book a, Book b)
+        {
+            int score = 0;
+
+            if (a.Author == b.Author)
+                score += 5;
+
+            var titleWordsA = a.Title.ToLower().Split(' ');
+            var titleWordsB = b.Title.ToLower().Split(' ');
+            var authorWordsA = a.Author.ToLower().Split(' ');
+            var authorWordsB = b.Author.ToLower().Split(' ');
+
+            score += titleWordsA.Intersect(titleWordsB).Count()+ authorWordsA.Intersect(authorWordsB).Count();
+
+            return score;
+        }
+
     }
 }

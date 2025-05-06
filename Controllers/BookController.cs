@@ -77,5 +77,12 @@ namespace LibraryManagementSystem.Controllers
             return Ok(results);
         }
 
+        [HttpGet("{id}/recommendations")]
+        public async Task<ActionResult<List<Book>>> GetRecommendations(Guid id)
+        {
+            var recommendations = await _bookService.GetSimilarBooks(id);
+            return Ok(recommendations);
+        }
+
     }
 }
